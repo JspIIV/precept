@@ -1,0 +1,5 @@
+Most moderation is a black box: a post disappears and nobody knows which rule it broke or how to contest it. Precept turns the rule into the contract.
+
+open_space(name, rule) opens a space with one rule in plain words, bound to the caller. post(space_id, content_url) files content into it, bound to the author, LISTED; the space rule is copied onto the post, so it is always judged against the rule in force. report(item_id), open to anybody, fetches the post; a GenLayer round reads it against that rule: VIOLATES removes it, ALLOWED keeps it listed, UNCLEAR changes nothing. The rule is the space's, not the reporter's, so one standard applies to everyone. appeal(item_id), by the author only, re-reads a removed post against the same rule; a successful one restores it and corrects the record. Every report and appeal is kept append-only on the post.
+
+An unrelated, unreadable or not-found page is UNCLEAR, never a removal. Proven on Asimov; tests in tests/precept_rules.py.

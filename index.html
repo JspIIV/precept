@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Precept — moderation by one public rule, with an appeal</title>
+<style>
+  :root{ --bg:#0b0c12; --card:#14161f; --line:#272a3a; --ink:#ecefff; --dim:#a6abc7; --faint:#6d7290;
+    --accent:#7c83ff; --grn:#4ade80; --red:#ff6b6b; --amber:#f5b301; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,sans-serif}
+  a{color:var(--accent)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 70px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .brand{font-weight:800;font-size:20px}.brand i{color:var(--accent);font-style:normal}
+  .net{font:12px ui-monospace,monospace;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+  button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:#1b1e2b;color:var(--ink);padding:9px 14px}
+  button.primary{background:var(--accent);color:#0a0b16;border-color:transparent;font-weight:700}
+  button.ghost{background:#1b1e2b}
+  button:disabled{opacity:.5;cursor:default}
+  h1{font-size:27px;margin:26px 0 6px;letter-spacing:-.3px}
+  .lead{color:var(--dim);max-width:730px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+  label{display:block;font:12px ui-monospace,monospace;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin:12px 0 5px}
+  input,textarea,select{width:100%;background:#0c0e17;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:10px 11px;font:inherit}
+  textarea{min-height:56px;resize:vertical}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+  .muted{color:var(--faint);font-size:13px}
+  .status{margin-top:10px;color:var(--dim);font-size:14px;min-height:18px}
+  h2{font-size:14px;color:var(--dim);font-family:ui-monospace,monospace;letter-spacing:1px;text-transform:uppercase;margin:28px 0 6px}
+  .card{border-top:1px solid var(--line);padding:16px 0}.card:first-child{border-top:0}
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .head{font-weight:700;font-size:16px;word-break:break-all}
+  .badge{display:inline-block;font:12px ui-monospace,monospace;font-weight:700;padding:3px 9px;border-radius:999px}
+  .b-listed{background:#151a33;color:var(--accent)} .b-removed{background:#331319;color:var(--red)}
+  .meta{color:var(--faint);font-size:12px;font-family:ui-monospace,monospace;margin-top:6px;word-break:break-all}
+  .rule{color:var(--dim);font-size:13px;margin-top:6px;border-left:2px solid var(--line);padding-left:10px}
+  .why{color:var(--dim);font-size:13px;margin-top:8px;border-left:2px solid var(--line);padding-left:10px}
+  .counts{display:flex;gap:16px;color:var(--dim);font-size:13px;font-family:ui-monospace,monospace;margin-top:4px;flex-wrap:wrap}
+  .spaces{display:flex;flex-direction:column;gap:8px}
+  .sp{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .sp b{color:var(--ink)} .sp .r{color:var(--dim);font-size:13px;margin-top:3px}
+  footer{color:var(--faint);font-size:13px;border-top:1px solid var(--line);padding-top:18px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Precept<i>.</i> one rule, evenly applied</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="net">GenLayer Asimov</span>
+      <button id="connect">Connect wallet</button>
+    </div>
+  </header>
+  <div id="wstatus" class="muted" style="margin-top:10px"></div>
+
+  <h1>Content moderation by one public rule, the same for everyone, with an auditable appeal.</h1>
+  <p class="lead">A space is opened with one rule in plain words. Anyone posts content into it, and anyone can
+    report a post. The contract fetches the post and a round of GenLayer validators reads it against that one
+    published rule and decides whether it breaks it. The rule is the space's, not the reporter's, so the same
+    standard applies to everyone. A removed post can be appealed by its author, a fresh round re-reads it, and
+    every report and appeal stays on the record.</p>
+
+  <div class="grid2">
+    <div>
+      <h2>Open a space</h2>
+      <section>
+        <label>Name</label><input id="sname" placeholder="Town Square" />
+        <label>The rule (plain words)</label>
+        <textarea id="srule" placeholder="No advertising or solicitations; on-topic discussion only."></textarea>
+        <div class="actions"><button class="primary" id="mkspace">Open space</button></div>
+        <div class="status" id="sstatus"></div>
+      </section>
+    </div>
+    <div>
+      <h2>Post to a space</h2>
+      <section>
+        <label>Space</label><select id="pspace"><option value="">Loading spaces…</option></select>
+        <label>Content URL</label><input id="purl" placeholder="https://…" />
+        <div class="actions"><button class="primary" id="mkpost">Post</button></div>
+        <div class="status" id="pstatus"></div>
+      </section>
+    </div>
+  </div>
+
+  <h2>Spaces</h2>
+  <section><div class="spaces" id="spaces"><div class="muted">Reading spaces from chain…</div></div></section>
+
+  <h2>Posts</h2>
+  <div class="counts" id="counts"></div>
+  <section id="board"><div class="muted">Reading posts from chain…</div></section>
+
+  <footer>
+    Contract: <a id="exp" href="#" target="_blank" rel="noopener">on the Asimov explorer</a> ·
+    <a href="https://github.com/JspIIV/precept" target="_blank" rel="noopener">source</a> ·
+    reads need no wallet; opening, posting, reporting and appealing are transactions on GenLayer Asimov.
+  </footer>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/genlayer-js@1.1.8";
+import { testnetAsimov } from "https://esm.sh/genlayer-js@1.1.8/chains";
+
+const CONTRACT = "0x2e268d8E0891B6506805Ce03e2AD208f187C4c93";
+const CHAIN_ID_HEX = "0x107d";
+const CHAIN_PARAMS = { chainId: CHAIN_ID_HEX, chainName: "GenLayer Asimov",
+  nativeCurrency:{name:"GEN",symbol:"GEN",decimals:18},
+  rpcUrls:["https://rpc-asimov.genlayer.com"], blockExplorerUrls:["https://explorer-asimov.genlayer.com"] };
+const EXPLORER = "https://explorer-asimov.genlayer.com";
+const ROUND_GAS = 8_000_000n, GAS_CAP = 95_000_000n, WALLET_COMPUTES=["nonce","type","chainId"];
+
+const reader = createClient({ chain: testnetAsimov });
+let account = null;
+const $ = id => document.getElementById(id);
+const short = a => a?`${String(a).slice(0,6)}…${String(a).slice(-4)}`:"";
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const transient = e => /revert|-32005|-32006|-32603|at capacity|gas rate|rate limit|backpressure|fetch failed|timeout|502|503|429|resource not found/i
+  .test(String(e?.details||e?.shortMessage||e?.message||e));
+$("exp").href = EXPLORER + "/address/" + CONTRACT;
+
+async function read(fn, args=[]) {
+  for (let i=1;i<=4;i++){ try { const raw = await reader.readContract({address:CONTRACT,functionName:fn,args});
+      try{return JSON.parse(raw)}catch{return raw} } catch(e){ if(!transient(e))throw e; await sleep(1500*i); } }
+}
+function walletFriendly(p){ return { ...p, request: async payload=>{
+  if(payload?.method!=="eth_sendTransaction") return p.request(payload);
+  const tx={...(payload.params?.[0]??{})}; for(const k of WALLET_COMPUTES) delete tx[k];
+  if(BigInt(tx.gas??0)<ROUND_GAS) tx.gas="0x"+ROUND_GAS.toString(16);
+  if(BigInt(tx.gas??0)>GAS_CAP) tx.gas="0x"+GAS_CAP.toString(16);
+  try{ return await p.request({method:"eth_sendTransaction",params:[tx]}); }
+  catch(err){ if(err?.code!==-32602||tx.gasPrice===undefined) throw err; const t={...tx}; delete t.gasPrice;
+    return p.request({method:"eth_sendTransaction",params:[t]}); } } }; }
+
+const injected = [];
+try{ window.addEventListener("eip6963:announceProvider", ev=>{ if(ev?.detail?.provider) injected.push(ev.detail); });
+  window.dispatchEvent(new Event("eip6963:requestProvider")); }catch{}
+function pickProvider(){
+  const mm = injected.find(d=>/metamask/i.test(d.info?.rdns||"")||/metamask/i.test(d.info?.name||""));
+  if(mm) return mm.provider;
+  const e = window.ethereum; if(!e) return null;
+  if(Array.isArray(e.providers)&&e.providers.length){ return e.providers.find(p=>p.isMetaMask) || e.providers[0]; }
+  return e;
+}
+function walletCount(){ if(injected.length) return injected.length; const e=window.ethereum; return Array.isArray(e?.providers)?e.providers.length:(e?1:0); }
+let eip1193=null;
+async function useGenLayer(){ const p=eip1193; const cur=await p.request({method:"eth_chainId"});
+  if(String(cur).toLowerCase()===CHAIN_ID_HEX) return;
+  try{ await p.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID_HEX}]}); }
+  catch(err){ if(err&&(err.code===4902||err.code===-32603)){ await p.request({method:"wallet_addEthereumChain",params:[CHAIN_PARAMS]}); return; } throw err; } }
+function client(){ return createClient({ chain: testnetAsimov, account, provider: walletFriendly(eip1193) }); }
+function wsay(msg){ const el=$("wstatus"); if(el) el.textContent=msg||""; }
+async function ensureWallet(){
+  eip1193 = pickProvider();
+  if(!eip1193) throw new Error("No wallet found in this browser. Reading needs no wallet; to open a space, post, report or appeal, install MetaMask and open this page in that browser (a wallet does not inject into Claude's built-in browser).");
+  if(!account){ const a=await eip1193.request({method:"eth_requestAccounts"}); account=a&&a[0]; if(!account) throw new Error("No account was shared. Open MetaMask, unlock it, and connect this site."); $("connect").textContent=short(account); }
+  await useGenLayer();
+}
+$("connect").onclick=async ()=>{
+  const n=walletCount();
+  wsay(n>1 ? "Opening MetaMask ("+n+" wallet extensions detected; if nothing appears, click the MetaMask icon in your toolbar)…"
+           : "Opening your wallet… confirm the connection in MetaMask.");
+  const hint=setTimeout(()=>wsay("Still waiting on the wallet. Click the MetaMask icon in your browser toolbar; a request may be waiting there. If you have more than one wallet extension, disable the others and reload."), 3500);
+  try{ await ensureWallet(); clearTimeout(hint); wsay("Connected "+short(account)+" on GenLayer Asimov."); await loadAll(); }
+  catch(e){ clearTimeout(hint); const code=e&&e.code;
+    if(code===-32002) wsay("A connection request is already open. Click the MetaMask icon in your toolbar to approve it.");
+    else if(code===4001) wsay("Connection rejected in the wallet. Click Connect wallet to try again.");
+    else wsay(e?.message||String(e)); }
+};
+
+async function sendWrite(fn, args){
+  const c=client();
+  for(let attempt=1;;attempt++){ try{ return await c.writeContract({address:CONTRACT,functionName:fn,args,value:0n}); }
+    catch(e){ if(!transient(e)||attempt>=6) throw e; await sleep(4000*attempt); } }
+}
+
+/* ---- open space ---- */
+$("mkspace").onclick = async () => {
+  try{ await ensureWallet();
+    const name=$("sname").value.trim(), rule=$("srule").value.trim();
+    if(!name){ $("sstatus").textContent="Give the space a name."; return; }
+    if(rule.length<8){ $("sstatus").textContent="State the rule in plain words."; return; }
+    $("sstatus").textContent="Opening the space… approve in your wallet.";
+    await sendWrite("open_space",[name,rule]);
+    $("sstatus").textContent="Space opened."; $("sname").value=""; $("srule").value="";
+    await sleep(4000); await loadAll();
+  }catch(e){ $("sstatus").textContent="Open failed: "+(e?.shortMessage||e?.message||e); }
+};
+/* ---- post ---- */
+$("mkpost").onclick = async () => {
+  try{ await ensureWallet();
+    const sid=$("pspace").value, purl=$("purl").value.trim();
+    if(sid===""){ $("pstatus").textContent="Pick a space."; return; }
+    if(!/^https?:\/\//.test(purl)){ $("pstatus").textContent="Give an http(s) content URL."; return; }
+    $("pstatus").textContent="Posting… approve in your wallet.";
+    await sendWrite("post",[sid,purl]);
+    $("pstatus").textContent="Posted."; $("purl").value="";
+    await sleep(4000); await loadAll();
+  }catch(e){ $("pstatus").textContent="Post failed: "+(e?.shortMessage||e?.message||e); }
+};
+/* ---- report / appeal ---- */
+async function moderate(fn, id){
+  const el=$("s-"+id);
+  try{ await ensureWallet(); if(el) el.textContent=(fn==="report"?"Reporting…":"Appealing…");
+    const before=JSON.stringify(await read("item",[String(id)]));
+    await sendWrite(fn,[String(id)]);
+    for(let i=0;i<90;i++){ await sleep(4000);
+      const now=await read("item",[String(id)]);
+      if(el) el.textContent=`Round running… ${(i+1)*4}s`;
+      if(JSON.stringify(now)!==before){ await loadAll(); return; } }
+    if(el) el.textContent="Still settling; reload in a minute.";
+  }catch(e){ if(el) el.textContent="Failed: "+(e?.shortMessage||e?.message||e); }
+}
+
+/* ---- render ---- */
+function badge(s){ return `<span class="badge ${s==="REMOVED"?"b-removed":"b-listed"}">${esc(s)}</span>`; }
+async function loadSpaces(){
+  const size = await read("size",[]).catch(()=>null);
+  const n = size ? size.spaces : 0;
+  const sel = $("pspace"); const opts=[]; const cards=[];
+  for(let i=0;i<n;i++){ const s=await read("space",[String(i)]).catch(()=>null); if(!s||!s.exists&&!s.rule) continue;
+    opts.push(`<option value="${i}">#${i} · ${esc(s.name)}</option>`);
+    cards.push(`<div class="sp"><b>#${i} · ${esc(s.name)}</b><div class="r">rule: ${esc(s.rule)}</div><div class="meta">moderator ${esc((s.moderator||"").slice(0,10))}…</div></div>`); }
+  sel.innerHTML = opts.length?opts.join(""):`<option value="">No spaces yet</option>`;
+  $("spaces").innerHTML = cards.length?cards.join(""):'<div class="muted">No spaces yet. Open one above.</div>';
+}
+async function loadBoard(){
+  const size = await read("size",[]).catch(()=>null);
+  if(size) $("counts").textContent = `${size.posts} posts · ${size.removed} removed · ${size.listed} listed · ${size.spaces} spaces`;
+  const data = await read("page",["0","30"]).catch(()=>null);
+  const items = (data && data.items) || [];
+  if(!items.length){ $("board").innerHTML='<div class="muted">No posts yet.</div>'; return; }
+  const me=(account||"").toLowerCase();
+  $("board").innerHTML = items.map(p=>{
+    const canReport = p.status==="LISTED";
+    const canAppeal = p.status==="REMOVED" && me && me===String(p.author).toLowerCase();
+    const n=Number(p.log_count||0);
+    return `<div class="card">
+      <div class="row">${badge(p.status)}<span class="head">${esc(p.content_url)}</span></div>
+      <div class="rule">rule (space #${esc(p.space_id)}): ${esc(p.rule)}</div>
+      <div class="meta">by ${esc((p.author||"").slice(0,10))}… · #${esc(p.id)} · ${p.reports} report${p.reports==1?"":"s"} · ${p.appeals} appeal${p.appeals==1?"":"s"} · ${n} on the log</div>
+      ${p.reason?`<div class="why"><b>${esc(p.last_verdict||p.status)}</b> — ${esc(p.reason)}${p.quote?`<br><span class="muted">“${esc(p.quote)}”</span>`:""}</div>`:""}
+      ${(canReport||canAppeal)?`<div class="actions">
+        ${canReport?`<button class="ghost repbtn" data-id="${esc(p.id)}">Report against the rule</button>`:""}
+        ${canAppeal?`<button class="primary appbtn" data-id="${esc(p.id)}">Appeal</button>`:""}
+      </div><div class="status" id="s-${esc(p.id)}"></div>`:""}
+    </div>`; }).join("");
+  document.querySelectorAll(".repbtn").forEach(b=>b.onclick=()=>moderate("report",b.getAttribute("data-id")));
+  document.querySelectorAll(".appbtn").forEach(b=>b.onclick=()=>moderate("appeal",b.getAttribute("data-id")));
+}
+async function loadAll(){ await loadSpaces(); await loadBoard(); }
+loadAll();
+</script>
+</body>
+</html>

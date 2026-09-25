@@ -1,0 +1,9 @@
+{
+  "name": "precept",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Content moderation by one public rule, the same for everyone, with an auditable appeal, on GenLayer.",
+  "scripts": { "deploy": "node scripts/deploy.mjs", "prove": "node scripts/prove.mjs" },
+  "dependencies": { "ethers": "^6", "genlayer-js": "1.1.8" }
+}

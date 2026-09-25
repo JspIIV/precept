@@ -1,0 +1,6 @@
+Re: how should the space handle borderline cases?
+
+I think the rule is mostly clear, but we should write down a couple of examples so
+new members know what counts as off-topic. Personally I disagree with removing posts
+just for being blunt; criticism should be fine as long as it stays about the argument
+and not the person. Curious what others think.
