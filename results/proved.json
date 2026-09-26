@@ -1,0 +1,223 @@
+{
+  "proved_at": "2026-09-26T06:24:13.641Z",
+  "network": "genlayer testnet asimov",
+  "contract": "0x2e268d8E0891B6506805Ce03e2AD208f187C4c93",
+  "removed": {
+    "id": "0",
+    "space_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "content_url": "https://raw.githubusercontent.com/JspIIV/precept/master/docs/spam-post.txt",
+    "rule": "No advertising, promotional offers, or solicitations; on-topic discussion only.",
+    "status": "REMOVED",
+    "posted_at": "2026-09-25T21:08:29+00:00",
+    "reports": 1,
+    "appeals": 0,
+    "last_verdict": "VIOLATES",
+    "reason": "The post is a promotional offer with a call to purchase followers, directly violating the rule against advertising and promotional offers.",
+    "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+    "log": [
+      {
+        "kind": "report",
+        "at": "2026-09-25T21:09:19+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+        "verdict": "VIOLATES",
+        "outcome": "REMOVE",
+        "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+        "reason": "The post is a promotional offer with a call to purchase followers, directly violating the rule against advertising and promotional offers."
+      }
+    ]
+  },
+  "allowed": {
+    "id": "1",
+    "space_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "content_url": "https://raw.githubusercontent.com/JspIIV/precept/master/docs/ontopic-post.txt",
+    "rule": "No advertising, promotional offers, or solicitations; on-topic discussion only.",
+    "status": "LISTED",
+    "posted_at": "2026-09-25T21:08:46+00:00",
+    "reports": 1,
+    "appeals": 0,
+    "last_verdict": "ALLOWED",
+    "reason": "The post is discussing interpretation of the space's own rule, which is on-topic meta-discussion, not advertising, promotion, or solicitation.",
+    "quote": "",
+    "log": [
+      {
+        "kind": "report",
+        "at": "2026-09-25T21:29:45+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+        "verdict": "ALLOWED",
+        "outcome": "KEEP",
+        "quote": "",
+        "reason": "The post is discussing interpretation of the space's own rule, which is on-topic meta-discussion, not advertising, promotion, or solicitation."
+      }
+    ]
+  },
+  "unreadable": {
+    "id": "2",
+    "space_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "content_url": "https://raw.githubusercontent.com/JspIIV/precept/master/docs/no-such-post-9f2c.txt",
+    "rule": "No advertising, promotional offers, or solicitations; on-topic discussion only.",
+    "status": "LISTED",
+    "posted_at": "2026-09-25T21:09:03+00:00",
+    "reports": 1,
+    "appeals": 0,
+    "last_verdict": "UNCLEAR",
+    "reason": "the post could not be read",
+    "quote": "",
+    "log": [
+      {
+        "kind": "report",
+        "at": "2026-09-26T06:22:44+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+        "verdict": "UNCLEAR",
+        "outcome": "NOOP",
+        "quote": "",
+        "reason": "the post could not be read"
+      }
+    ]
+  },
+  "appeal": {
+    "id": "0",
+    "space_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "content_url": "https://raw.githubusercontent.com/JspIIV/precept/master/docs/spam-post.txt",
+    "rule": "No advertising, promotional offers, or solicitations; on-topic discussion only.",
+    "status": "REMOVED",
+    "posted_at": "2026-09-25T21:08:29+00:00",
+    "reports": 1,
+    "appeals": 1,
+    "last_verdict": "VIOLATES",
+    "reason": "The post is a direct promotional offer to sell followers, likes, and views, which constitutes advertising and solicitation.",
+    "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+    "log": [
+      {
+        "kind": "report",
+        "at": "2026-09-25T21:09:19+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+        "verdict": "VIOLATES",
+        "outcome": "REMOVE",
+        "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+        "reason": "The post is a promotional offer with a call to purchase followers, directly violating the rule against advertising and promotional offers."
+      },
+      {
+        "kind": "appeal",
+        "at": "2026-09-26T06:23:20+00:00",
+        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+        "verdict": "VIOLATES",
+        "outcome": "UPHOLD",
+        "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+        "reason": "The post is a direct promotional offer to sell followers, likes, and views, which constitutes advertising and solicitation."
+      }
+    ]
+  },
+  "history": {
+    "exists": true,
+    "id": "0",
+    "status": "REMOVED",
+    "reports": 1,
+    "appeals": 1,
+    "log": [
+      {
+        "kind": "report",
+        "at": "2026-09-25T21:09:19+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+        "verdict": "VIOLATES",
+        "outcome": "REMOVE",
+        "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+        "reason": "The post is a promotional offer with a call to purchase followers, directly violating the rule against advertising and promotional offers."
+      },
+      {
+        "kind": "appeal",
+        "at": "2026-09-26T06:23:20+00:00",
+        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+        "verdict": "VIOLATES",
+        "outcome": "UPHOLD",
+        "quote": "BUY CHEAP FOLLOWERS NOW - 50% OFF THIS WEEK ONLY",
+        "reason": "The post is a direct promotional offer to sell followers, likes, and views, which constitutes advertising and solicitation."
+      }
+    ]
+  },
+  "record": {
+    "exists": true,
+    "address": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "posts": 3,
+    "removed": 1
+  },
+  "size": {
+    "spaces": 1,
+    "posts": 3,
+    "listed": 2,
+    "removed": 1
+  },
+  "checks": [
+    {
+      "label": "a post that breaks the rule is REMOVED on report",
+      "ok": true
+    },
+    {
+      "label": "the removal marks the author's record",
+      "ok": true
+    },
+    {
+      "label": "an on-topic post is judged ALLOWED and stays LISTED",
+      "ok": true
+    },
+    {
+      "label": "an unreadable post is UNCLEAR and stays LISTED",
+      "ok": true
+    },
+    {
+      "label": "the author's appeal is judged against the same rule and, still violating, is upheld",
+      "ok": true
+    },
+    {
+      "label": "every report and appeal is preserved in the log, oldest first",
+      "ok": true
+    },
+    {
+      "label": "this run adds one removed post to the book",
+      "ok": true
+    }
+  ],
+  "transcript": [
+    "Precept, proven on GenLayer Asimov",
+    "  contract 0x2e268d8E0891B6506805Ce03e2AD208f187C4c93",
+    "  moderator(padv) 0x80519c53f10d731e4ff83a7d9acd69cf98da6258  author(ppub) 0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "",
+    "padv opened space #0 with the rule: No advertising, promotional offers, or solicitations; on-topic discussion only.",
+    "ppub posted #0 (an advertisement)",
+    "ppub posted #1 (an on-topic comment)",
+    "ppub posted #2 (an unreadable source)",
+    "",
+    "reporting the ad #0...",
+    "  report-ad: REMOVED v=VIOLATES (30s)",
+    "  #0 status REMOVED | The post is a promotional offer with a call to purchase followers, directly violating the rule against advertising and promotional offers.",
+    "reporting the on-topic post #1...",
+    "  report-ontopic: not settled after poll, retrying",
+    "  report-ontopic: not settled after poll, retrying",
+    "  report-ontopic: LISTED v=ALLOWED (30s)",
+    "  #1 status LISTED | The post is discussing interpretation of the space's own rule, which is on-topic meta-discussion, not advertising, promotion, or solicitation.",
+    "reporting the unreadable post #2...",
+    "  report-unreadable: not settled after poll, retrying",
+    "  report-unreadable: LISTED v=UNCLEAR (30s)",
+    "  #2 status LISTED | verdict UNCLEAR",
+    "the author appeals the removed ad #0...",
+    "  appeal-ad: REMOVED v=VIOLATES (45s)",
+    "  #0 status REMOVED | The post is a direct promotional offer to sell followers, likes, and views, which constitutes advertising and solicitation.",
+    "",
+    "ad #0 log: [report:VIOLATES, appeal:VIOLATES]",
+    "author record {\"exists\":false,\"address\":\"0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c\",\"posts\":0,\"removed\":0} -> {\"exists\":true,\"address\":\"0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c\",\"posts\":3,\"removed\":1}",
+    "book: {\"spaces\":1,\"posts\":3,\"listed\":2,\"removed\":1}",
+    "",
+    "  ok   a post that breaks the rule is REMOVED on report",
+    "  ok   the removal marks the author's record",
+    "  ok   an on-topic post is judged ALLOWED and stays LISTED",
+    "  ok   an unreadable post is UNCLEAR and stays LISTED",
+    "  ok   the author's appeal is judged against the same rule and, still violating, is upheld",
+    "  ok   every report and appeal is preserved in the log, oldest first",
+    "  ok   this run adds one removed post to the book",
+    "",
+    "7 checks. One public rule, applied evenly, with a removal, a dismissal, and an appeal on the record."
+  ]
+}
