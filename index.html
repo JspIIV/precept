@@ -181,10 +181,8 @@ $("mkspace").onclick = async () => {
     const name=$("sname").value.trim(), rule=$("srule").value.trim();
     if(!name){ $("sstatus").textContent="Give the space a name."; return; }
     if(rule.length<8){ $("sstatus").textContent="State the rule in plain words."; return; }
-    $("sstatus").textContent="Opening the space… approve in your wallet.";
-    await sendWrite("open_space",[name,rule]);
-    $("sstatus").textContent="Space opened."; $("sname").value=""; $("srule").value="";
-    await sleep(4000); await loadAll();
+    $("sstatus").textContent="Opening the space… approve it in your wallet.";
+    await submitAndConfirm("open_space",[name,rule],"spaces",$("sstatus"),"Space opened.",()=>{ $("sname").value=""; $("srule").value=""; });
   }catch(e){ $("sstatus").textContent="Open failed: "+(e?.shortMessage||e?.message||e); }
 };
 /* ---- post ---- */
@@ -193,18 +191,41 @@ $("mkpost").onclick = async () => {
     const sid=$("pspace").value, purl=$("purl").value.trim();
     if(sid===""){ $("pstatus").textContent="Pick a space."; return; }
     if(!/^https?:\/\//.test(purl)){ $("pstatus").textContent="Give an http(s) content URL."; return; }
-    $("pstatus").textContent="Posting… approve in your wallet.";
-    await sendWrite("post",[sid,purl]);
-    $("pstatus").textContent="Posted."; $("purl").value="";
-    await sleep(4000); await loadAll();
+    $("pstatus").textContent="Posting… approve it in your wallet.";
+    await submitAndConfirm("post",[sid,purl],"posts",$("pstatus"),"Posted.",()=>{ $("purl").value=""; });
   }catch(e){ $("pstatus").textContent="Post failed: "+(e?.shortMessage||e?.message||e); }
 };
+
+// Submit a plain write and confirm it on chain by watching a size counter grow.
+// GenLayer consensus can be slow, and a wallet can surface a transient internal error
+// while the transaction is still settling, so a reported error is not treated as a
+// failure until the chain has been given time to show the change.
+async function submitAndConfirm(fn, args, countField, statusEl, okMsg, onOk){
+  let before = 0;
+  try{ before = (await read("size"))[countField]; }catch{}
+  let sendErr = null;
+  try{ await sendWrite(fn, args); }
+  catch(e){ sendErr = e; }
+  statusEl.textContent = "Submitted. Waiting for the network to confirm; this can take up to a couple of minutes on Asimov…";
+  for(let i=0;i<45;i++){
+    await sleep(4000);
+    let now = before;
+    try{ now = (await read("size"))[countField]; }catch{}
+    if(now > before){ statusEl.textContent = okMsg; if(onOk) onOk(); await loadAll(); return true; }
+    statusEl.textContent = `Confirming on chain… ${(i+1)*4}s (Asimov can be slow; leave this open)`;
+  }
+  statusEl.textContent = sendErr
+    ? "The network did not confirm in time and may be congested. Your transaction may still land; reload in a minute, otherwise try again."
+    : "Still settling; reload in a minute to see it.";
+  return false;
+}
 /* ---- report / appeal ---- */
 async function moderate(fn, id){
   const el=$("s-"+id);
-  try{ await ensureWallet(); if(el) el.textContent=(fn==="report"?"Reporting…":"Appealing…");
+  try{
+    await ensureWallet(); if(el) el.textContent=(fn==="report"?"Reporting…":"Appealing…");
     const before=JSON.stringify(await read("item",[String(id)]));
-    await sendWrite(fn,[String(id)]);
+    try{ await sendWrite(fn,[String(id)]); }catch(e){ if(el) el.textContent="Submitted; the network may be slow, waiting for the round…"; }
     for(let i=0;i<90;i++){ await sleep(4000);
       const now=await read("item",[String(id)]);
       if(el) el.textContent=`Round running… ${(i+1)*4}s`;
